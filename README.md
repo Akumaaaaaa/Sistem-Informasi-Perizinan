@@ -3,11 +3,11 @@
 [![PHP Version](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://php.net/)
 ![Copyright: Akmal](https://img.shields.io/badge/Copyright-Akmal-green.svg)
 
-## 🌐 Fitur Utama
+## 🌐 Main Features
 - **👑 Role-based Access Control**
-- **📅 Form Pengajuan Izin**
-- **📊 Dashboard Interaktif** 
-- **🔐 Sistem Autentikasi** 
+- **📅 Permission Form**
+- **📊 Interactive Dashboards** 
+- **🔐 Authentication System** 
 - **🖨️ Table Printable**
 
 ## 🛠 Tools
@@ -15,15 +15,15 @@
 ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?logo=mysql&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/-Bootstrap-7952B3?logo=bootstrap&logoColor=white)
 
-## 🚀 Instalasi
-**Jangan lupa untuk mengextract library fpdf pada folder karyawan!**
-1. Clone repositori:
+## 🚀 Installation
+**Don't forget to extract FPDF Library from ```karyawan/fpdf```**
+1. Clone repository:
 ```bash
 git clone https://github.com/Akumaaaaaa/Sistem-Informasi-Perizinan.git
 ```
-2. Buat database ```db_siperizin```
-3. Import struktur tabel dari ```suratizin.sql```
-4. Update file ```db_login.php``` dengan kredensial database Anda
+2. Create database ```db_siperizin```
+3. Import table structure from ```suratizin.sql```
+4. Update file ```db_login.php``` with your credential
 ```bash
-$conn = mysqli_connect("hostname", "username", "password", "db_superizin");
+$conn = mysqli_connect("hostname", "username", "password", "db_siperizin");
 ```
