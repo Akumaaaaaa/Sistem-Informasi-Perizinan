@@ -16,8 +16,8 @@
 ![Bootstrap](https://img.shields.io/badge/-Bootstrap-7952B3?logo=bootstrap&logoColor=white)
 
 ## 🚀 Installation
-**Don't forget to extract FPDF Library from ```karyawan/fpdf```**
-1. Clone repository:
+**Don't forget to extract FPDF Library from ```karyawan/fpdf185.rar```**
+1. Clone repository using:
 ```bash
 git clone https://github.com/Akumaaaaaa/Sistem-Informasi-Perizinan.git
 ```
