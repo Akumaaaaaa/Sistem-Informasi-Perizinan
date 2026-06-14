@@ -88,7 +88,6 @@ http://localhost/SiPerizin/
 | koro@mail.com | 1234 | Atasan |
 | atasan@mail.com | 1234 | Atasan |
 | karyawan@mail.com | 1234 | Karyawan |
-| mfirmansyah@yahoo.co.id | 1234 | Karyawan |
 
 > Password demo disimpan sebagai plain text di `suratizin.sql`. Saat login pertama kali, sistem otomatis mengenkripsi password menggunakan bcrypt dan menyimpannya kembali ke database — tidak perlu langkah migrasi manual.
 
