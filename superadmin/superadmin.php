@@ -5,6 +5,7 @@
     // isset not login
     if (!isset($_SESSION['email'])) {
         header("location:../index.php");
+        exit();
     }
     error_reporting(E_ERROR | E_PARSE);
 
@@ -152,14 +153,13 @@
                     <span class="form-control mb-2 bg-light" type="text-muted" name="nip_user"
                           placeholder="NIP User"><?= $nip_user; ?></span>
               <p></p>
+              <input type="hidden" name="id" value="<?= intval($nip_user); ?>">
               <label for="email">Email</label>
-                <input type="hidden" name="id" value="<?= $nip_user; ?>">
-                <input type="email" name="email" placeholder="Email" value="<?= $email; ?>"  class="form-control" required>
+                <input type="email" name="email" placeholder="Email" value="<?= htmlspecialchars($email); ?>"  class="form-control" required>
               <br>
 
-              <label for="password">Password</label>
-                <input type="hidden" name="id" value="<?= $nip_user; ?>">
-                <input type="password" name="password" placeholder="Password" value="<?= $password; ?>"  class="form-control" required>
+              <label for="password">Password (kosongkan jika tidak ingin mengubah)</label>
+                <input type="password" name="password" placeholder="Password baru" value=""  class="form-control">
               </div>
 
               <!-- Modal footer -->

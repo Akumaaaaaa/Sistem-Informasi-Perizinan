@@ -5,6 +5,7 @@
     // isset not login
     if (!isset($_SESSION['email'])) {
         header("location:../index.php");
+        exit();
     }
     error_reporting(E_ERROR | E_PARSE);
 
@@ -94,7 +95,7 @@
       <form method="POST" autocomplete="on"  name="form">
         <div class="form-group  mb-4">
             <label class="h6" class="h6" for="nip_user">NIP</label>
-            <input type="nip_user" name="nip_user" placeholder="NIP User" class="form-control" value="<?php if(isset($nip_user)) {echo $nip_user;} ?>" >
+            <input type="text" name="nip_user" placeholder="NIP User" class="form-control" value="<?php if(isset($nip_user)) {echo htmlspecialchars($nip_user);} ?>" >
             <div class="error text-danger fst-italic"> <?php if(isset($error_nip_user)) echo $error_nip_user; ?> </div>
         </div>
         <div class="form-group  mb-4">

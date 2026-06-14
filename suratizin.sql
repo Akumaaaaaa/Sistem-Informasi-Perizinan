@@ -114,6 +114,7 @@ INSERT INTO `tb_karyawan` (`nip_karyawan`, `nama_karyawan`, `nip_atasan`, `id_ja
 --
 
 CREATE TABLE `tb_surat_izin` (
+  `pk_id` int(11) NOT NULL AUTO_INCREMENT,
   `id_surat_izin` int(25) NOT NULL,
   `nama_lengkap` varchar(50) NOT NULL,
   `tanggal` varchar(25) NOT NULL,
@@ -133,7 +134,7 @@ CREATE TABLE `tb_surat_izin` (
 CREATE TABLE `tb_user` (
   `nip_user` int(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(25) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `status_user` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -180,7 +181,7 @@ ALTER TABLE `tb_karyawan`
 -- Indexes for table `tb_surat_izin`
 --
 ALTER TABLE `tb_surat_izin`
-  ADD PRIMARY KEY (`id_surat_izin`);
+  ADD PRIMARY KEY (`pk_id`);
 
 --
 -- Indexes for table `tb_user`
@@ -191,6 +192,12 @@ ALTER TABLE `tb_user`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `tb_surat_izin`
+--
+ALTER TABLE `tb_surat_izin`
+  MODIFY `pk_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tb_bidang`

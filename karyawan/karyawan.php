@@ -4,6 +4,7 @@
     // isset not login
     if (!isset($_SESSION['email'])) {
         header("location:../index.php");
+        exit();
     }
     error_reporting(E_ERROR | E_PARSE);
 
@@ -33,9 +34,7 @@
     <title> Karyawan Dashboard </title>
     <link rel="icon" type="image/x-icon" href="../asset/favicon.ico">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -173,27 +172,27 @@
 								</thead>
 								<tbody>
 								  <?php
-								  $ambildata = mysqli_query($conn, 'SELECT * FROM tb_surat_izin, tb_jenis_izin WHERE tb_surat_izin.id_jenis_izin = tb_jenis_izin.id_jenis_izin');
+								  $ambildata = mysqli_query($conn, "SELECT tb_surat_izin.*, tb_jenis_izin.nama_izin FROM tb_surat_izin INNER JOIN tb_jenis_izin ON tb_surat_izin.id_jenis_izin = tb_jenis_izin.id_jenis_izin WHERE tb_surat_izin.id_surat_izin = ".intval($KaryawanDetail['nip_user']));
 								  $i = 1;
+								  $verifikasi = null;
 								  while ($data = mysqli_fetch_array($ambildata)) {
 									  $nama_lengkap = $data['nama_lengkap'];
-									  $tanggal= $data['tanggal'];
+									  $tanggal = $data['tanggal'];
 									  $jam_pergi = $data['jam_pergi'];
 									  $jam_kembali = $data['jam_kembali'];
-                                      $id_jenis_izin = $data['nama_izin'];
-                                      $id_surat_izin = $data['id_surat_izin'];
+                                      $jenis_izin = $data['nama_izin'];
 									  $keperluan = $data['keperluan'];
                                       $verifikasi = $data['verifikasi'];
 								  ?>
 
 								<tr>
 								  <td><?= $i++; ?></td>
-								  <td><?= $nama_lengkap; ?></td>
-								  <td><?= $tanggal; ?></td>
-								  <td><?= $jam_pergi; ?></td>
-								  <td><?= $jam_kembali; ?></td>
-                                  <td><?= $id_jenis_izin; ?></td>
-								  <td><?= $keperluan; ?></td>
+								  <td><?= htmlspecialchars($nama_lengkap); ?></td>
+								  <td><?= htmlspecialchars($tanggal); ?></td>
+								  <td><?= htmlspecialchars($jam_pergi); ?></td>
+								  <td><?= htmlspecialchars($jam_kembali); ?></td>
+                                  <td><?= htmlspecialchars($jenis_izin); ?></td>
+								  <td><?= htmlspecialchars($keperluan); ?></td>
                                 </tr>
 
 								<?php
@@ -212,16 +211,17 @@
                 <div class="col">
                     <div class="card rounded-4 ">
                         <div class="card-body">
-                            <p class="text-center" id="title1">Status Perizinan</p>
-                            <?php if ($verifikasi == 'Disetujui') {
-                                $color = 'green';
-                            } else if ($verifikasi == 'Ditolak') {
-                                $color = 'red';
-                            } else{
-                                $color = 'orange';
-                            }?>
+                            <p class="text-center" id="title1">Status Perizinan Terakhir</p>
+                            <?php if ($verifikasi === null): ?>
+                            <h2 class="mb-3" style="color:grey; text-align:center;">Belum Ada Pengajuan</h2>
+                            <?php else:
+                                if ($verifikasi == 'Disetujui') { $color = 'green'; }
+                                elseif ($verifikasi == 'Ditolak') { $color = 'red'; }
+                                else { $color = 'orange'; }
+                            ?>
                             <h2 class="mb-3" style="color:<?php echo $color ?>; text-align:center;">
-                                <?php echo $verifikasi; ?></h2>
+                                <?php echo htmlspecialchars($verifikasi); ?></h2>
+                            <?php endif; ?>
                                 <div style="display: flex; justify-content: center; align-items: center; height: 10px; padding-top: 20px; padding-bottom: 20px;">
                                     <a href="printable.php">
                                         <button id="btnSubmit" type="button" class="btn btn-primary">Print</button>

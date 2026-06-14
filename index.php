@@ -7,59 +7,68 @@
   }
 
   if (isset($_POST['login'])) {
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
-  
+    $valid = true;
+
     if ($email == '') {
       $error_email = "Email is required";
-      $valid = FALSE;
+      $valid = false;
     } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $error_email = "Invalid email format";
-      $valid = FALSE;
+      $valid = false;
     }
-    //cek validasi password
-    $password = ($_POST['password']);
+
     if ($password == '') {
       $error_password = "Password is required";
-      $valid = FALSE;
+      $valid = false;
     }
-  
-    if (!$email == '' && !$password == '') {
-      $query = mysqli_query($conn, "select * from tb_user where email='$email' and password='$password'");
-      $cek = mysqli_num_rows($query);
-  
-      if ($cek > 0) {
-  
-        $data = mysqli_fetch_assoc($query);
-  
-        // cek jika user login sebagai superadmin
-        if ($data['status_user'] == "superadmin") {
-          // buat session login dan username
-          $_SESSION['email'] = $email;
-          $_SESSION['status_user'] = "superadmin";
-          header("location:./superadmin/superadmin.php");
-  
-  
-          // cek jika user login sebagai atasan
-        } else if ($data['status_user'] == "atasan") {
-          // buat session login dan email
-          $_SESSION['email'] = $email;
-          $_SESSION['status_user'] = "atasan";
-          header("location: ./atasan/atasan.php");
-  
-          // cek jika user login sebagai karyawan
-        } else if ($data['status_user'] == "karyawan") {
-          // buat session login dan email
-          $_SESSION['email'] = $email;
-          $_SESSION['status_user'] = "karyawan";
-          header("location:./karyawan/karyawan.php");
+
+    if ($valid) {
+      $stmt = $conn->prepare("SELECT * FROM tb_user WHERE email = ?");
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $data = $stmt->get_result()->fetch_assoc();
+      $stmt->close();
+
+      $authenticated = false;
+      if ($data) {
+        if (str_starts_with($data['password'], '$2y$')) {
+          $authenticated = password_verify($password, $data['password']);
         } else {
-  
-          // alihkan ke halaman login kembali
+          // Legacy plain-text: verify and rehash automatically
+          $authenticated = ($password === $data['password']);
+          if ($authenticated) {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $upd = $conn->prepare("UPDATE tb_user SET password = ? WHERE nip_user = ?");
+            $upd->bind_param("si", $hash, $data['nip_user']);
+            $upd->execute();
+            $upd->close();
+          }
+        }
+      }
+
+      if ($authenticated) {
+        session_regenerate_id(true);
+        $_SESSION['email'] = $email;
+        $_SESSION['status_user'] = $data['status_user'];
+
+        if ($data['status_user'] == "superadmin") {
+          header("location:./superadmin/superadmin.php");
+          exit();
+        } else if ($data['status_user'] == "atasan") {
+          header("location:./atasan/atasan.php");
+          exit();
+        } else if ($data['status_user'] == "karyawan") {
+          header("location:./karyawan/karyawan.php");
+          exit();
+        } else {
           header("location:index.php?pesan=gagal");
+          exit();
         }
       } else {
         header("location:index.php?pesan=gagal");
+        exit();
       }
     }
   }
@@ -193,11 +202,6 @@
                 <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
                     <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
                     <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
-                    <style>
-                    * {
-                        text-align: c;
-                    }
-                    </style>
 
                     <div class="card bg-glass rounded-4">
                         <div class="card-body px-3 py-4 px-md-5 rounded-4">
@@ -224,7 +228,7 @@
                                 </div>
                                 <p style="color:red;"><?php echo $gagal ?></p>
 
-                                <button class="btn btn-primary btn-lg px-5 w-100" type="login" name="login"
+                                <button class="btn btn-primary btn-lg px-5 w-100" type="submit" name="login"
                                     value="login">Login</button><br>
                                 <br>
                             </form>

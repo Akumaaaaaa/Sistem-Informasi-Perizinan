@@ -5,6 +5,7 @@
     // isset not login
     if (!isset($_SESSION['email'])) {
         header("location:../index.php");
+        exit();
     }
     error_reporting(E_ERROR | E_PARSE);
 
@@ -111,12 +112,12 @@
       <form method="POST" autocomplete="on"  name="form">
         <div class="form-group  mb-4">
             <label class="h6" class="h6" for="nip_karyawan">NIP Karyawan</label>
-            <input type="nip_karyawan" name="nip_karyawan" placeholder="NIP Karyawan" class="form-control" value="<?php if(isset($nip_karyawan)) {echo $nip_karyawan;} ?>" >
+            <input type="text" name="nip_karyawan" placeholder="NIP Karyawan" class="form-control" value="<?php if(isset($nip_karyawan)) {echo htmlspecialchars($nip_karyawan);} ?>" >
             <div class="error text-danger fst-italic"> <?php if(isset($error_nip_karyawan)) echo $error_nip_karyawan; ?> </div>
         </div>
         <div class="form-group  mb-4">
             <label class="h6" class="h6" for="nama_karyawan">Nama Karyawan</label>
-            <input type="nama_karyawan" name="nama_karyawan" placeholder="Nama Karyawan" class="form-control" value="<?php if(isset($nama_karyawan)) {echo $nama_karyawan;} ?>" >
+            <input type="text" name="nama_karyawan" placeholder="Nama Karyawan" class="form-control" value="<?php if(isset($nama_karyawan)) {echo htmlspecialchars($nama_karyawan);} ?>" >
             <div class="error text-danger fst-italic"> <?php if(isset($error_nama_karyawan)) echo $error_nama_karyawan; ?> </div>
         </div>
         <div class="form-group  mb-4">
@@ -143,7 +144,7 @@
         </div>
         <div class="form-group  mb-4">
             <label class="h6" class="h6" for="nip_atasan">NIP Atasan</label>
-            <input type="nip_atasan" name="nip_atasan" placeholder="NIP Atasan" class="form-control" value="<?php if(isset($nip_atasan)) {echo $nip_atasan;} ?>" >
+            <input type="text" name="nip_atasan" placeholder="NIP Atasan" class="form-control" value="<?php if(isset($nip_atasan)) {echo htmlspecialchars($nip_atasan);} ?>" >
             <div class="error text-danger fst-italic"> <?php if(isset($error_nip_atasan)) echo $error_nip_atasan; ?> </div>
             <p style="font-style: italic; color: blue; font-size: 12px;">Isi angka 1 jika tidak memiliki atasan</p>
         </div>
